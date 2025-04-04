@@ -1,10 +1,14 @@
 package com.example.lionSurveys.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.lionSurveys.model.Company;
+import com.example.lionSurveys.model.Department;
 import com.example.lionSurveys.services.CompanyService;
+import com.example.lionSurveys.services.DepartmentService;
 
 @RestController
 @RequestMapping("/api")
@@ -14,6 +18,8 @@ public class apicontroller {
     // Add your API endpoints here
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private DepartmentService departmentService;
 
     // Example endpoint
     @RequestMapping("/example")
@@ -21,7 +27,23 @@ public class apicontroller {
         Company  company = new Company();
         company.setName("Lion Surveys");
         
-        companyService.saveCompany(company);
+        company = companyService.saveCompany(company);
+
+        Department  department = new Department("Engineering", company);
+        departmentService.saveDepartment(department);
+        System.out.println("Department saved: " + department.getName());
+        List<Company> companies = companyService.findAll();
+
+        try{
+            Department  foundDepartment = departmentService.findByNameAndCompany("Engineering", company.getId());
+            System.out.println("Department found: " + foundDepartment);
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println("Department not found: " + e.getMessage());
+        }
+        
+        
+        
 
 
 

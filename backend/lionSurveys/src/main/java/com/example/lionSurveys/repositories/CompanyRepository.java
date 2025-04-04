@@ -17,6 +17,7 @@ public interface CompanyRepository extends CrudRepository< Company, Long> {
     Optional <Company> findByName(String name);
     Optional <Company> findById(Long id);
     List<Company> findAll();
+    @SuppressWarnings("unchecked")
     Company save(Company company);
     
 
